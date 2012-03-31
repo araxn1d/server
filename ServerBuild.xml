@@ -30,10 +30,10 @@
     </target>
     
     <target name="lib" depends="clean" description="pull up libs into lib dir">
-        <mkdir dir="${libDir}"/>
+        <mkdir dir="${libDir}"/>      
         
         <copy todir="${libDir}">
-            <fileset dir="allLib\"
+            <fileset dir="allLib"
                      includes="*.jar"/>
          </copy>
     </target>
