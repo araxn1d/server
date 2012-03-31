@@ -7,7 +7,8 @@
     <property name="distDir" location="build"/>
     <property name="testDir" location="test"/>
     <property name="libDir" location="lib"/>
-    <property name="metricsDir" location="out"/>
+    <property name="outDir" location="out"/>
+    <property name="collector.class" value="FailedTests"/>
     
     <property name="JDKLibDir" location="C:\Program Files\java\jdk1.1.7.0_03"/>
     <property name="gsonLibDir" location="C:\JAVA_LIBS\google-gson-2.1\"/>
@@ -24,9 +25,8 @@
     <target name="clean"  description="clean all folders">
         <delete dir="${buildDir}"/>
         <delete dir="${distDir}"/>
-        <delete dir="${testDir}"/>
         <delete dir="${libDir}"/>
-        <delete dir="${metricsDir}"/>
+        <delete dir="${outDir}"/>
     </target>
     
     <target name="lib" depends="clean" description="pull up libs into lib dir">
@@ -35,12 +35,12 @@
         <copy todir="${libDir}">
             <fileset dir="allLibs"
                      includes="*.jar"/>
-         </copy>
+        </copy>
     </target>
     
     <target name="build"  depends="lib" description="make java compilation">
         
-         <copy todir="${buildDir}">
+        <copy todir="${buildDir}">
             <fileset dir="${srcDir}"
                      includes="*.xml"/>
         </copy>
@@ -70,7 +70,23 @@
     </target>
     
     <target name="test" depends="build" description="run tests">
+        <mkdir dir="${outDir}"/> 
         <echo>Some tests running.....</echo>
+        <junit haltonerror="false" haltonfailure="false">
+            <sysproperty key="ant.junit.failureCollector" value="${outDir}/${collector.class}"/>
+            <classpath>
+                <pathelement location="${outDir.dir}"/>
+            </classpath>
+            <batchtest todir="${outDir}/fail" unless="hasFailingTests">
+                <fileset dir="${testDir}" includes="**/*.java"/>
+                <formatter type="failure"/>
+                <formatter type="plain" usefile="false"/>
+            </batchtest>
+            <test name="FailedTests" if="hasFailingTests">
+                <formatter type="failure"/>
+                <formatter type="plain" usefile="false"/>
+            </test>
+        </junit>
     </target>
     
     <target name="metrics" depends="test" description="pull up metrics to the out dir">
