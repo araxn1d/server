@@ -7,7 +7,7 @@ package comands;
 import threetierapp.person.Person;
 
 /**
- *
+ * ADDD SHIT
  * @author Жека
  */
 public class AddPerson implements ICommand {
