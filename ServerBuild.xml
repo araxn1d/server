@@ -33,30 +33,9 @@
         <mkdir dir="${libDir}"/>
         
         <copy todir="${libDir}">
-            <fileset dir="${gsonLibDir}"
+            <fileset dir="allLib\"
                      includes="*.jar"/>
-        </copy>
-        
-        <copy todir="${libDir}">
-            <fileset dir="${gsonLibDir}"
-                     includes="*.class"/>
-        </copy>
-        
-        <copy todir="${libDir}">
-            <fileset dir="${hibernateLibDir}"
-                     includes="*.jar"/>
-        </copy>
-        
-        <copy todir="${libDir}">
-            <fileset dir="${hsqldbLibDir}"
-                     includes="**/*.jar"/>
-        </copy>
-        
-        <copy todir="${libDir}">
-            <fileset dir="${jettyLibDir}"
-                     includes="*.jar"/>
-        </copy>
-        
+         </copy>
     </target>
     
     <target name="build"  depends="lib" description="make java compilation">
