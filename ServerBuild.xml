@@ -75,7 +75,7 @@
         <junit haltonerror="false" haltonfailure="false">
             <sysproperty key="ant.junit.failureCollector" value="${outDir}/${collector.class}"/>
             <classpath>
-                <pathelement location="${outDir.dir}"/>
+                <fileset dir="allLibs" includes="*junit.jar"/>
             </classpath>
             <batchtest todir="${outDir}/fail" unless="hasFailingTests">
                 <fileset dir="${testDir}" includes="**/*.java"/>
