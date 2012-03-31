@@ -1,0 +1,18 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping    PUBLIC "-//Hibernate/Hibernate Mapping DTD//EN"     "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+	<class name="threetierapp.person.Person" table="persondb">
+		<id column="id" name="id" type="integer">
+			<generator class="increment" />
+		</id>
+		<property name="firstName" column="fname" type="java.lang.String" />
+		<property name="lastName" column="lname" type="java.lang.String" />
+                <property name="birthDate" column="Date" type="java.lang.String" />
+                <property name="phoneNum" column="Phone" type="java.lang.String" />
+                <property name="eMail" column="eMail" type="java.lang.String" />
+                <property name="url" column="url" type="java.lang.String" />
+                 <property name="bigField" column="Field" type="java.lang.String" />
+                <property name="imgData" column="Photo" type="binary" length = "2147483647"/>
+                <property name="file" column="File" type="binary" length = "2147483647"/>
+	</class>
+</hibernate-mapping>

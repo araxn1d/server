@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project name="AppServer" default="ci" basedir=".">
+    <description> A simple Project for three tier server, testing ant</description>
+
+    <property name="srcDir" location="src"/>
+    <property name="buildDir" location="bin"/>
+    <property name="distDir" location="build"/>
+    <property name="testDir" location="test"/>
+    <property name="libDir" location="lib"/>
+    <property name="metricsDir" location="out"/>
+    
+    <property name="JDKLibDir" location="C:\Program Files\java\jdk1.1.7.0_03"/>
+    <property name="gsonLibDir" location="C:\JAVA_LIBS\google-gson-2.1\"/>
+    <property name="hibernateLibDir" location="C:\JAVA_LIBS\hibernate-release-4.1.0.Final\hibernate-release-4.1.0.Final\lib\required\"/>
+    <property name="hsqldbLibDir" location="C:\JAVA_LIBS\hsqldb-2.2.8\hsqldb-2.2.8\hsqldb\lib\"/>
+    <property name="jettyLibDir" location="C:\JAVA_LIBS\jetty-distribution-8.1.2.v20120308\jetty-distribution-8.1.2.v20120308\lib\"/>
+
+    <path id="classpath">
+        <fileset dir="${libDir}" includes="*.jar"/>
+    </path>
+
+    <target name="ci" description="inint project" depends="run"/>
+    
+    <target name="clean"  description="clean all folders">
+        <delete dir="${buildDir}"/>
+        <delete dir="${distDir}"/>
+        <delete dir="${testDir}"/>
+        <delete dir="${libDir}"/>
+        <delete dir="${metricsDir}"/>
+    </target>
+    
+    <target name="lib" depends="clean" description="pull up libs into lib dir">
+        <mkdir dir="${libDir}"/>
+        
+        <copy todir="${libDir}">
+            <fileset dir="${gsonLibDir}"
+                     includes="*.jar"/>
+        </copy>
+        
+        <copy todir="${libDir}">
+            <fileset dir="${gsonLibDir}"
+                     includes="*.class"/>
+        </copy>
+        
+        <copy todir="${libDir}">
+            <fileset dir="${hibernateLibDir}"
+                     includes="*.jar"/>
+        </copy>
+        
+        <copy todir="${libDir}">
+            <fileset dir="${hsqldbLibDir}"
+                     includes="**/*.jar"/>
+        </copy>
+        
+        <copy todir="${libDir}">
+            <fileset dir="${jettyLibDir}"
+                     includes="*.jar"/>
+        </copy>
+        
+    </target>
+    
+    <target name="build"  depends="lib" description="make java compilation">
+        
+         <copy todir="${buildDir}">
+            <fileset dir="${srcDir}"
+                     includes="*.xml"/>
+        </copy>
+        
+        <mkdir dir="${buildDir}"/>
+        <javac srcdir="${srcDir}" destdir="${buildDir}" classpathref="classpath" includeantruntime="false"/>
+    </target>
+    
+    <target name="jar" depends="metrics" description="run tests">
+        <mkdir dir="${distDir}"/>
+        
+        <copy todir="${distDir}">
+            <fileset dir="."
+                     includes="fu"/>
+        </copy>
+        
+        <jar destfile="${distDir}\AppServer.jar" basedir="${buildDir}">
+            <manifest>
+                <attribute name="Main-Class" value="threetierapp.ThreeTierApp"/>
+            </manifest>
+        </jar>
+    </target>
+    
+    <target name="run" depends="jar">
+        <java jar="${distDir}\AppServer.jar" fork="true"/>
+        <echo>Server Start</echo>
+    </target>
+    
+    <target name="test" depends="build" description="run tests">
+        <echo>Some tests running.....</echo>
+    </target>
+    
+    <target name="metrics" depends="test" description="pull up metrics to the out dir">
+        <echo>Pull up Metrics...... </echo>
+    </target>
+</project>
